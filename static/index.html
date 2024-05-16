@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NTNU Python Editor</title>
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        .header {
+            background-color: #f1f1f1;
+            padding: 5px;
+            text-align: left; /* Align logo to the left and button to the right */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .split {
+            position: fixed;
+            top: 50px; /* Height of the header */
+            bottom: 0;
+            overflow: auto;
+            width: 50%;
+        }
+        .left {
+            left: 0;
+        }
+        .right {
+            right: 0;
+            background: #eee; /* Light gray background for the output area */
+        }
+        #editor {
+            height: 100%;
+            width: 100%;
+        }
+        pre {
+            margin: 0;
+            padding: 10px;
+            height: 100%;
+            overflow: auto;
+            background: #f8f8f8; /* Slightly off-white background for the output */
+            white-space: pre-wrap; /* Wraps text */
+            word-wrap: break-word; /* Breaks text at normal word breaks */
+        }
+        .run-button {
+            padding: 10px 20px;
+            background-color: #4CAF50; /* Green background color */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js"></script>
+</head>
+<body>
+
+<div class="header">
+    <img src="https://i.imgur.com/Vxet58k.png" alt="NTNU" style="height:40px;">
+    <button class="run-button" onclick="runCode()">Run</button>
+</div>
+
+<div class="split left">
+    <div id="editor">print("Hello, World!")</div>
+</div>
+
+<div class="split right">
+    <pre id="outputLog">Output will be shown here...</pre>
+</div>
+
+<script>
+    var editor = ace.edit("editor");
+    editor.setTheme("ace/theme/monokai");
+    editor.session.setMode("ace/mode/python");
+    editor.session.setUseWrapMode(true);
+    editor.setOptions({
+        enableBasicAutocompletion: true,
+        enableSnippets: true,
+        enableLiveAutocompletion: false,
+        fontSize: "16px"
+    });
+
+    function runCode() {
+        const code = editor.getValue();
+        fetch('/run', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({code: code})
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data)
+            document.getElementById('outputLog').textContent = data.result;
+        })
+        .catch(error => console.error('Error:', error));
+    }
+</script>
+
+</body>
+</html>
