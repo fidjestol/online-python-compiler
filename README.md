@@ -23,7 +23,7 @@ Navigate to the directory containing the Docker file and build the Docker image.
 docker build -t python-runner .
 docker run -p 5000:5000 python-runner
 ```
-### Step 4: Access the IDE
+### Step 3: Access the IDE
 Open a web browser and navigate to http://localhost:5000/. You should see the Python Docker IDE interface, ready to execute Python code. Replace localhost with the IPv4 of your server if necessary.
 
 Troubleshooting
