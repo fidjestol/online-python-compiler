@@ -29,3 +29,6 @@ Open a web browser and navigate to http://localhost:5000/. You should see the Py
 Troubleshooting
 Docker Issues: If the Docker container fails to start, verify that the Docker image was built correctly and that there are no errors in the Docker logs. Use docker logs [container_id] to view logs.
 Port Availability: Ensure that port 5000 is not in use on your host. If it is, you can either free the port or modify the docker run command to map to a different port.
+
+### Step 4: Access the IDE
+Add new lines to the requirements.txt to add new modules. Note: GUI is currently not supported.
