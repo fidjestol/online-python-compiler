@@ -17,7 +17,7 @@ def run_code():
 def execute_python_code(code):
     client = docker.from_env()
     try:
-        container = client.containers.run("python-runner", command=f"python -c '{code}'", detach=True, remove=False, stdout=True, stderr=True, network_disabled=True, mem_limit='128m')
+        container = client.containers.run("python-runner", command="python -c 'import os; exec(os.environ[\"PYTHON_CODE\"])'", detach=True, remove=False, stdout=True, stderr=True, network_disabled=True, mem_limit='128m', environment={'PYTHON_CODE': code})
         result = container.wait(timeout=10)
         if result['StatusCode'] == 0:
             # If execution finished without errors, get the output
